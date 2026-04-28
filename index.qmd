@@ -1,0 +1,8 @@
+---
+title: "介護福祉士過去問 第38回 (2026年1月実施) "
+---
+<div id="quiz"></div>
+
+<script>
+window.quizCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXBaNLDdIqGylOxOSpOLa6maaG8vx17hUoxGCOHJfdSMHynIl4ozr7BWK0LoYm2vjgXwT5reWmpp-/pub?gid=1229209791&single=true&output=csv";
+</script>
