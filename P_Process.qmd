@@ -1,0 +1,16 @@
+---
+title: "介護福祉士過去問 介護過程 "
+---
+
+<div id="quiz"></div>
+
+<script>
+window.quizCSV = "P_Process.json";
+
+
+// 【追加】出題ルールの設定
+window.quizConfig = {
+  // "カテゴリ名": 出題数
+  "介護過程": 5
+};
+</script>

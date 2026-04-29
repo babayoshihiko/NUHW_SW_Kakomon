@@ -21,8 +21,10 @@ website:
             text: "第38回（2025年度）"
           - href: kako_37.qmd
             text: "第37回（2024年度）"
-      - text: "新潟医療福祉大学 公式サイト" # リンクとして大学名を入れる場合
-        href: https://www.nuhw.ac.jp
+      - text: "単元ごと"
+        menu:
+          - href: P_Process.qmd
+            text: "介護過程"
 
 format:
   html:
@@ -42,3 +44,4 @@ format:
 resources:
   - Baba.png
   - P37.json
+  - P_Process.json
