@@ -145,7 +145,8 @@ async function loadCSV(url) {
 
 function convertToQuizData(csvData) {
   return csvData.map(row => ({
-    category: row.category || row["カテゴリ"] || "", 
+    // CSVの列名が「category」または「カテゴリ」に対応
+    category: row.category || row["カテゴリ"] || "",
     question: row.question || row["問題"],
     choices: [
       row.correct || row["正解"],
@@ -160,37 +161,48 @@ function convertToQuizData(csvData) {
 
 /* --- 将来的に initQuiz 内で使う抽出ロジックのイメージ --- */
 
-// 配列から指定された数だけランダムに選ぶ補助関数
+/* --- 配列からランダムに指定数を取り出す補助関数 --- */
 function getRandomSubset(array, count) {
   const shuffled = shuffle([...array]);
   return shuffled.slice(0, count);
 }
 
-async function initQuizRandom() {
+async function initQuiz() {
   const url = window.quizCSV;
+  const config = window.quizConfig; // 学校側の設定を取得
+
   if (!url) return;
 
   const csvData = await loadCSV(url);
   const allData = convertToQuizData(csvData);
 
-  // --- ここからが将来のカテゴリ選択ロジック ---
-  
-  // 1. カテゴリごとに分類（CSVに 'category' 列がある想定）
-  const dementiaQuizzes = allData.filter(q => q.category === "dementia");
-  const disabilityQuizzes = allData.filter(q => q.category === "disability");
+  let finalQuizData = [];
 
-  // 2. それぞれから2問ずつランダムに抽出
-  const selectedQuizzes = [
-    ...getRandomSubset(dementiaQuizzes, 2),
-    ...getRandomSubset(disabilityQuizzes, 2)
-  ];
+  if (config) {
+    // 設定がある場合：カテゴリごとに抽出
+    Object.keys(config).forEach(category => {
+      const count = config[category];
+      const filtered = allData.filter(q => q.category === category);
+      
+      if (filtered.length > 0) {
+        finalQuizData = finalQuizData.concat(getRandomSubset(filtered, count));
+      } else {
+        console.warn(`カテゴリ「${category}」の問題が見つかりませんでした。`);
+      }
+    });
+    
+    // 最後に全体をシャッフル（カテゴリ順に並ばないようにする）
+    finalQuizData = shuffle(finalQuizData);
+  } else {
+    // 設定がない場合：今まで通り全件表示
+    finalQuizData = allData;
+  }
 
-  // 3. 抽出した問題を表示
-  validateQuizData(selectedQuizzes);
-  renderQuiz(selectedQuizzes);
+  validateQuizData(finalQuizData);
+  renderQuiz(finalQuizData);
 }
 
-async function initQuiz() {
+async function initQuiz_original() {
   const url = window.quizCSV;
   if (!url) return;
   const csvData = await loadCSV(url);

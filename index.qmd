@@ -1,9 +1,20 @@
 ---
-title: "介護福祉士過去問 第38回 (2026年1月実施) "
+title: "テスト"
 ---
 
 <div id="quiz"></div>
 
 <script>
 window.quizCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXBaNLDdIqGylOxOSpOLa6maaG8vx17hUoxGCOHJfdSMHynIl4ozr7BWK0LoYm2vjgXwT5reWmpp-/pub?gid=1229209791&single=true&output=csv";
+
+
+// 【追加】出題ルールの設定
+window.quizConfig = {
+  // "カテゴリ名": 出題数
+  "こころとからだのしくみ": 2,
+  "発達と老化の理解": 2,
+  "認知症の理解": 2,
+  "障害の理解": 2,
+  "医療的ケア": 1
+};
 </script>
