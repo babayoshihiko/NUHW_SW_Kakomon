@@ -2,15 +2,33 @@ project:
   type: website
 
 website:
-  title: "NUHW_SW"
+  title: "介護福祉士問題演習"
+  # 大学名などをフッター（ページ最下部）に入れる場合
+  page-footer: 
+    left: "©2026 新潟医療福祉大学 介護福祉学科"
+    right: "AI 准教授 馬場 監修"
+  
   navbar:
+    background: "#f8dfe7" # ★ここをピンク（Zoom案内と同じ色）に
+    collapse: true
     left:
       - href: index.qmd
         text: Home
+# --- ここからドロップダウンの設定 ---
+      - text: "過去問"
+        menu:
+          - href: kako_38.qmd
+            text: "第38回（2025年度）"
+          - href: kako_37.qmd
+            text: "第37回（2024年度）"
+      - text: "新潟医療福祉大学 公式サイト" # リンクとして大学名を入れる場合
+        href: https://www.nuhw.ac.jp
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      - cosmo
+      - custom.scss
     css: /quiz/quiz.css
     toc: true
     include-in-header:
@@ -23,3 +41,4 @@ format:
 
 resources:
   - Baba.png
+  - P37.json

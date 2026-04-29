@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+// メインのアクセントカラーをピンク系に
+$primary: #e60073; 
+$navbar-bg: #f8dfe7;
+$navbar-fg: #333; // ナビゲーションの文字色（濃いグレー）
+
+/*-- scss:rules --*/
+// ボタンの色なども調整したい場合
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+}
+
+// リンクの色
+a {
+  color: $primary;
+}

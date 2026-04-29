@@ -45,3 +45,34 @@ rt {
   font-size: 0.6em;
   color: #555;
 }
+
+@media print {
+  /* スコアやボタンなどの操作要素を消す */
+  #score, button, .result, .explanation, #popup-container, .no-print {
+    display: none !important;
+  }
+
+  /* リンクの横にURLを表示しないようにする（Quarto/Pandoc対策） */
+  a:after { content: "" !important; }
+
+  /* 文字色を真っ黒にする（インク節約） */
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  /* 設問の塊がページをまたがないようにする */
+  .quiz-item {
+    page-break-inside: avoid;
+  }
+  #quiz {
+      display: block !important;
+    }
+    /* 設問の塊をページをまたいで分割しない */
+    #quiz > div {
+      display: block !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+}
+}
