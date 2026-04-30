@@ -1,8 +1,10 @@
 [build]
   command = """
-  curl -LO https://quarto.org/download/latest/quarto-linux-amd64.tar.gz &&
-  tar -xzf quarto-linux-amd64.tar.gz &&
+  set -e
+  curl -fL --retry 5 --retry-delay 2 -o quarto.tar.gz https://quarto.org/download/latest/quarto-linux-amd64.tar.gz &&
+  tar -xzf quarto.tar.gz &&
   export PATH=$PWD/quarto/bin:$PATH &&
+  quarto --version &&
   quarto render
   """
   publish = "_site"
