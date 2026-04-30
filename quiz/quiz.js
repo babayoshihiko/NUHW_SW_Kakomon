@@ -65,50 +65,6 @@ async function loadData(url) {
   return convertToQuizData(csvResult);
 }
 
-/* =========================
-   表示・クイズ制御系
-========================= */
-
-function renderQuiz(quizData, containerId = "quiz") {
-  const container = document.getElementById(containerId);
-  const popupContainer = document.getElementById("popup-container");
-  if (!container) return;
-
-  if (popupContainer) popupContainer.style.display = "flex";
-  container.innerHTML = "";
-
-  quizData.forEach((q, index) => {
-    const div = document.createElement("div");
-    div.style.marginBottom = "2em";
-    div.classList.add("quiz-item");
-
-    let html = `<p><strong>Q${index + 1}. ${mdInline(q.question)}</strong></p>`;
-
-    // 正解と誤答を合体させてシャッフル
-    const allChoices = [
-      { text: q.correct, isCorrect: true },
-      ...q.wrongs.map(w => ({ text: w, isCorrect: false }))
-    ];
-    const shuffled = shuffle([...allChoices]);
-
-    shuffled.forEach(choice => {
-      // データの渡し方をJSON文字列にして安全に
-      const safeExp = q.explanation ? JSON.stringify(q.explanation) : '""';
-      html += `<button 
-                data-correct="${choice.isCorrect}" 
-                onclick='checkAnswer(this, ${safeExp})'>
-                ${mdInline(choice.text)}
-              </button>`;
-    });
-
-    html += `<p class="result"></p><p class="explanation" style="display:none;"></p>`;
-    div.innerHTML = html;
-    container.appendChild(div);
-  });
-  
-  updateScoreDisplay();
-}
-
 function checkAnswer(btn, explanation) {
   const parent = btn.parentElement;
   const result = parent.querySelector(".result");
@@ -140,6 +96,61 @@ function checkAnswer(btn, explanation) {
 }
 
 /* =========================
+   表示・クイズ制御系
+========================= */
+
+function renderQuiz(quizData, containerId = "quiz") {
+  const container = document.getElementById(containerId);
+  const popupContainer = document.getElementById("popup-container");
+  if (!container) return;
+
+  if (popupContainer) popupContainer.style.display = "flex";
+  container.innerHTML = "";
+
+  let currentCategory = ""; // 現在表示中のカテゴリを保持
+
+  quizData.forEach((q, index) => {
+    // --- カテゴリ見出しの挿入 ---
+    if (q.category && q.category !== currentCategory) {
+      currentCategory = q.category;
+      const categoryTitle = document.createElement("h3");
+      categoryTitle.style.marginTop = "2em";
+      categoryTitle.style.borderLeft = "5px solid #007bff";
+      categoryTitle.style.paddingLeft = "10px";
+      categoryTitle.textContent = currentCategory;
+      container.appendChild(categoryTitle);
+    }
+
+    const div = document.createElement("div");
+    div.style.marginBottom = "2em";
+    div.classList.add("quiz-item");
+
+    let html = `<p><strong>Q${index + 1}. ${mdInline(q.question)}</strong></p>`;
+
+    const allChoices = [
+      { text: q.correct, isCorrect: true },
+      ...q.wrongs.map(w => ({ text: w, isCorrect: false }))
+    ];
+    const shuffled = shuffle([...allChoices]);
+
+    shuffled.forEach(choice => {
+      const safeExp = q.explanation ? JSON.stringify(q.explanation) : '""';
+      html += `<button 
+                data-correct="${choice.isCorrect}" 
+                onclick='checkAnswer(this, ${safeExp})'>
+                ${mdInline(choice.text)}
+              </button>`;
+    });
+
+    html += `<p class="result"></p><p class="explanation" style="display:none;"></p>`;
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+  
+  updateScoreDisplay();
+}
+
+/* =========================
    印刷機能
 ========================= */
 
@@ -157,6 +168,7 @@ function preparePrint() {
 }
 
 // 印刷用レンダリング
+// 印刷用レンダリング
 function renderQuizForPrint(quizData) {
   const container = document.getElementById("quiz");
   const popupContainer = document.getElementById("popup-container");
@@ -170,13 +182,27 @@ function renderQuizForPrint(quizData) {
     </div>
   `;
 
+  let currentCategory = ""; // カテゴリ管理用
+
   quizData.forEach((q, index) => {
+    // --- カテゴリ見出しの挿入 ---
+    if (q.category && q.category !== currentCategory) {
+      currentCategory = q.category;
+      const categoryTitle = document.createElement("h3");
+      categoryTitle.style.borderBottom = "1px solid #666";
+      categoryTitle.style.marginTop = "30px";
+      categoryTitle.style.marginBottom = "15px";
+      categoryTitle.style.paddingBottom = "5px";
+      categoryTitle.textContent = currentCategory;
+      container.appendChild(categoryTitle);
+    }
+
     const div = document.createElement("div");
     div.style.breakInside = "avoid";
     div.style.pageBreakInside = "avoid";
     div.style.marginBottom = "2.5rem";
 
-    // 選択肢を合体（印刷時はシャッフル不要ならそのままでも良いが、一応シャッフル）
+    // 選択肢を合体・シャッフル
     const choices = shuffle([q.correct, ...q.wrongs]);
 
     div.innerHTML = `
@@ -228,6 +254,10 @@ function shuffle(array) {
   return array;
 }
 
+/* =========================
+   共通ツール・初期化
+========================= */
+
 async function initQuiz() {
   const container = document.getElementById("quiz");
   const url = window.quizCSV || window.quizJSON;
@@ -239,7 +269,9 @@ async function initQuiz() {
     const allData = await loadData(url);
     
     let finalQuizData = [];
+
     if (config && Object.keys(config).length > 0) {
+      // 設定がある場合：カテゴリごとに抽出してシャッフル
       Object.keys(config).forEach(cat => {
         const count = config[cat];
         const filtered = allData.filter(q => q.category && q.category.trim() === cat.trim());
@@ -248,9 +280,14 @@ async function initQuiz() {
           finalQuizData = finalQuizData.concat(subset);
         }
       });
-      finalQuizData = shuffle(finalQuizData);
+      // 注意：ここでは全体の shuffle(finalQuizData) は行わず、カテゴリの並びを維持します
     } else {
-      finalQuizData = allData;
+      // 設定がない場合：カテゴリごとにグループ化して、その中でシャッフル
+      const categories = [...new Set(allData.map(q => q.category))];
+      categories.forEach(cat => {
+        const filtered = allData.filter(q => q.category === cat);
+        finalQuizData = finalQuizData.concat(shuffle([...filtered]));
+      });
     }
 
     if (finalQuizData.length === 0) finalQuizData = allData;
