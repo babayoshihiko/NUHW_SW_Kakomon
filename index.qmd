@@ -2,10 +2,25 @@
 title: "テスト"
 ---
 
+このページはテスト用です。
+
+- こころとからだのしくみ: 2
+- 発達と老化の理解: 2
+- 認知症の理解: 2
+- 障害の理解: 2
+- 医療的ケア: 1
+
+それぞれランダムに出題するようになっています。
+
+問題データ
+
+<a href="https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing</a>
+
+
 <div id="quiz"></div>
 
 <script>
-window.quizCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXBaNLDdIqGylOxOSpOLa6maaG8vx17hUoxGCOHJfdSMHynIl4ozr7BWK0LoYm2vjgXwT5reWmpp-/pub?gid=1229209791&single=true&output=csv";
+window.quizCSV = "https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/export?format=csv";
 
 
 // 【追加】出題ルールの設定

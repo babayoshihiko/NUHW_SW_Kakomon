@@ -46,12 +46,6 @@ jobs:
       - name: Render Quarto
         run: quarto render
 
-      - name: Copy _headers
-        run: |
-          find . -name "_headers"
-          cp ./_headers _site/ || cp ./site/_headers _site/
-          ls -la _site/
-
       # ---- Deploy to Netlify ----
       - name: Deploy to Netlify
         run: |
