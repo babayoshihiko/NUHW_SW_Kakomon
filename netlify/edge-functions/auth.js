@@ -1,18 +1,31 @@
 export default async (request, context) => {
   const auth = request.headers.get("authorization");
 
-  // ユーザー名: user / パスワード: password の場合
-  // 独自の ID/PASS にしたい場合は、ここを書き換えるか環境変数を使う
-  const expectedAuth = "Basic " + btoa("nuhw:nuhw");
+  // 1. ユーザー名とパスワードのリストを定義
+  const users = {
+    "nuhw": "nuhw",
+    "nuhw": "sw"
+  };
 
-  if (auth !== expectedAuth) {
-    return new Response("Unauthorized", {
-      status: 401,
-      headers: { "WWW-Authenticate": 'Basic realm="Secure Area"' },
-    });
+  if (auth) {
+    // 2. ブラウザから送られてくる "Basic dXNlcjpwYXNz" 形式を解析
+    const base64Credentials = auth.split(" ")[1];
+    const credentials = atob(base64Credentials); // "user:pass" に変換
+    const [username, password] = credentials.split(":");
+
+    // 3. ユーザー名が存在し、かつパスワードが一致するかチェック
+    if (users[username] === password) {
+      return await context.next();
+    }
   }
 
-  return await context.next();
+  // 認証失敗時、または初回アクセス時
+  return new Response("Unauthorized", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Secure Area"',
+    },
+  });
 };
 
 export const config = { path: "/*" };
