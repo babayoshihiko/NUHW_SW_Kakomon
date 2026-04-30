@@ -4,17 +4,13 @@
 
   curl -fL --retry 5 -o quarto.tar.gz https://quarto.org/download/latest/quarto-linux-amd64.tar.gz
 
-  tar -xzf quarto.tar.gz
-
-  # Find the extracted directory dynamically
-  QUARTO_DIR=$(find . -maxdepth 1 -type d -name "quarto*" | head -n 1)
-
-  echo "Quarto dir: $QUARTO_DIR"
-
-  export PATH=$PWD/$QUARTO_DIR/bin:$PATH
+  mkdir -p /tmp/quarto
+  tar -xzf quarto.tar.gz -C /tmp/quarto --strip-components=1
+  export PATH=/tmp/quarto/bin:$PATH
 
   quarto --version
 
-  quarto render index.qmd
+  # CRITICAL: render current project explicitly
+  quarto render . --no-cache
   """
   publish = "_site"
