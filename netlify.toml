@@ -15,6 +15,6 @@
 
   quarto --version
 
-  quarto render
+  quarto render index.qmd
   """
   publish = "_site"
