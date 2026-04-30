@@ -1,5 +1,13 @@
 project:
   type: website
+  output-dir: _site
+
+
+resources:
+  - Baba.png
+  - P37.json
+  - P_Process.json
+
 
 website:
   title: "介護福祉士問題演習"
@@ -41,7 +49,3 @@ format:
           <script src="/quiz/quiz.js"></script>
     include-after-body: header.html
 
-resources:
-  - Baba.png
-  - P37.json
-  - P_Process.json
