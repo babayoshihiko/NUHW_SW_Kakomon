@@ -4,6 +4,7 @@ project:
 
 
 resources:
+  - _headers  # For Netlify user/password
   - Baba.png
   - P37.json
   - P_Process.json
