@@ -1,16 +1,2 @@
 [build]
-  command = """
-  set -e
-
-  curl -fL --retry 5 -o quarto.tar.gz https://quarto.org/download/latest/quarto-linux-amd64.tar.gz
-
-  mkdir -p /tmp/quarto
-  tar -xzf quarto.tar.gz -C /tmp/quarto --strip-components=1
-  export PATH=/tmp/quarto/bin:$PATH
-
-  quarto --version
-
-  # CRITICAL: render current project explicitly
-  quarto render . --no-cache
-  """
   publish = "_site"
