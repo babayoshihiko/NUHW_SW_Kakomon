@@ -46,6 +46,12 @@ jobs:
       - name: Render Quarto
         run: quarto render
 
+      - name: Copy _headers
+        run: |
+          find . -name "_headers"
+          cp ./_headers _site/ || cp ./site/_headers _site/
+          ls -la _site/
+
       # ---- Deploy to Netlify ----
       - name: Deploy to Netlify
         run: |
@@ -53,3 +59,6 @@ jobs:
           netlify deploy --prod --dir=_site \
             --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
             --site=${{ secrets.NETLIFY_SITE_ID }}
+
+
+
