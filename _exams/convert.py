@@ -26,7 +26,7 @@ def parse(text: str):
         line = line.rstrip()
 
         # カテゴリ
-        m = re.match(r"^##\s*(.+)", line)
+        m = re.match(r"^\s*問題\s*([0-9０-９]+)\s*(.*)", line)
         if m:
             flush()
             category = m.group(1).strip()

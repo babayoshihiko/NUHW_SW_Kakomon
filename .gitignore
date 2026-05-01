@@ -8,3 +8,5 @@
 **/*.quarto_ipynb
 _site
 *.Rproj
+_exams/_*_ruby.Rmd 
+_exams/*.json

@@ -8,5 +8,7 @@
 # この段階では正答が設定されていないので、正答選択肢を correct に移します。
 # 一つ上のフォルダに移動させます。
 
+rm _*_ruby.Rmd *.json
+
 ./ruby.sh _P38.Rmd _P38_ruby.Rmd && \
 python3.13 ./convert.py _P38_ruby.Rmd P38.json
