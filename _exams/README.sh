@@ -12,3 +12,13 @@ rm _*_ruby.Rmd *.json
 
 ./ruby.sh _P38.Rmd _P38_ruby.Rmd && \
 python3.13 ./convert.py _P38_ruby.Rmd P38.json
+
+
+./ruby.sh _P36.Rmd _P36_ruby.Rmd && \
+python ./convert.py _P36_ruby.Rmd P36.json
+
+./ruby.sh _P37.Rmd _P37_ruby.Rmd && \
+python ./convert.py _P37_ruby.Rmd P37.json
+
+./ruby.sh _P38.Rmd _P38_ruby.Rmd && \
+python ./convert.py _P38_ruby.Rmd P38.json

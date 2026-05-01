@@ -2,8 +2,32 @@ import re
 import json
 from pathlib import Path
 
+def extract_answers(lines):
+    answers = {}
+    mode = False
+
+    for line in lines:
+        line = line.strip()
+
+        if line.startswith("## 解答一覧"):
+            mode = True
+            continue
+
+        if mode:
+            if not line:
+                continue
+
+            m = re.match(r"([0-9]+)\s+([1-5])", line)
+            if m:
+                ref = f"問題{m.group(1)}"
+                answers[ref] = int(m.group(2))
+
+    return answers
+
+
 def parse(text: str):
     lines = text.splitlines()
+    answers = extract_answers(lines)
 
     data = []
     category = None
@@ -13,18 +37,33 @@ def parse(text: str):
     choices = []
     mode = "idle"
 
+
     def flush():
         nonlocal current, question_lines, choices
-
+    
         if current:
             current["question"] = "\\n".join(question_lines).strip()
-            current["wrongs"] = choices
+    
+            ref = current["ref"]
+    
+            # ★ choicesをコピー（元を壊さない）
+            wrongs = choices.copy()
+    
+            if ref in answers:
+                idx = answers[ref] - 1
+                if 0 <= idx < len(choices):
+                    current["correct"] = choices[idx]
+    
+                    # ★ correctをwrongsから削除
+                    del wrongs[idx]
+    
+            current["wrongs"] = wrongs
+    
             data.append(current)
-
+    
         current = None
         question_lines = []
         choices = []
-        mode = "idle"
 
     for line in lines:
         line = line.rstrip()
@@ -91,7 +130,15 @@ if __name__ == "__main__":
     input_path = Path(sys.argv[1])
     output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else input_path.with_suffix(".json")
 
+    print("==== DEBUG START ====")
+    print("File exists:", input_path.exists())
+    print("File size:", input_path.stat().st_size)
+
     text = input_path.read_text(encoding="utf-8")
+
+    lines = text.splitlines()
+    print("Total lines:", len(lines))
+        
     result = parse(text)
 
     output_path.write_text(

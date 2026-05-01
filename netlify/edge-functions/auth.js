@@ -3,7 +3,7 @@ export default async (request, context) => {
 
   // 1. ユーザー名とパスワードのリストを定義
   const users = {
-    "nuhw": "nuhw",
+    "sw": "nuhw",
     "nuhw": "sw"
   };
 

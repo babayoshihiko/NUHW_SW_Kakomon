@@ -5,7 +5,9 @@ project:
 
 resources:
   - Baba.png
+  - P38.json
   - P37.json
+  - P36.json
   - P_Process.json
 
 
@@ -29,6 +31,8 @@ website:
             text: "第38回（2025年度）"
           - href: kako_37.qmd
             text: "第37回（2024年度）"
+          - href: kako_36.qmd
+            text: "第36回（2023年度）"
       - text: "単元ごと"
         menu:
           - href: P_Process.qmd
