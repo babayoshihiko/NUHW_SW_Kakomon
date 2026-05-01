@@ -168,7 +168,6 @@ function preparePrint() {
 }
 
 // 印刷用レンダリング
-// 印刷用レンダリング
 function renderQuizForPrint(quizData) {
   const container = document.getElementById("quiz");
   const popupContainer = document.getElementById("popup-container");
@@ -224,12 +223,31 @@ function renderQuizForPrint(quizData) {
    共通ツール・初期化
 ========================= */
 
+function getRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function updateScoreDisplay() {
   const scoreDiv = document.getElementById("score");
   if (!scoreDiv) return;
+
   const rate = answeredCount === 0 ? 0 : Math.round((correctCount / answeredCount) * 100);
-  let comment = answeredCount === 0 ? "まずは一問！" : (rate < 60 ? "がんばれ！" : "この調子！");
-  
+
+  const comments = {
+    start: ["まずは一問！", "ここからスタート！", "気軽に始めよう"],
+    low: ["がんばれ！", "まだ伸びる！", "ここからが勝負", "復習しよう"],
+    high: ["この調子！", "いい感じ！", "そのまま突き進め", "完璧に近い！"]
+  };
+
+  let comment;
+  if (answeredCount === 0) {
+    comment = getRandom(comments.start);
+  } else if (rate < 60) {
+    comment = getRandom(comments.low);
+  } else {
+    comment = getRandom(comments.high);
+  }
+
   scoreDiv.innerHTML = `
     <div style="display: flex; align-items: center; gap: 10px; padding: 5px;">
       <img src="Baba.png" alt="Baba" width="50" height="50" style="border-radius: 50%; border: 2px solid #007bff; background:white;">
