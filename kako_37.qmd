@@ -8,6 +8,7 @@ title: "介護福祉士過去問 第37回 (2025年1月実施) "
 <div id="quiz"></div>
 
 <script>
+window.noShuffleQuestions = false; // true はシャッフル、false はしない
 window.quizCSV = "P37.json";
 
 

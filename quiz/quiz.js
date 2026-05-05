@@ -250,7 +250,7 @@ function updateScoreDisplay() {
 
   scoreDiv.innerHTML = `
     <div style="display: flex; align-items: center; gap: 10px; padding: 5px;">
-      <img src="Baba.png" alt="Baba" width="50" height="50" style="border-radius: 50%; border: 2px solid #007bff; background:white;">
+      <img src="Baba.png" alt="Baba" width="80" height="80" style="border-radius: 50%; border: 2px solid #007bff; background:white;">
       <div>
         <div style="font-weight: bold;">スコア: ${correctCount}/${answeredCount} (${rate}%)</div>
         <div style="font-size: 0.8rem; color: #444;">${comment}</div>
@@ -260,7 +260,8 @@ function updateScoreDisplay() {
 }
 
 function mdInline(text) {
-  const html = marked.parse(text || "").replace(/^<p>|<\/p>\n?$/g, "");
+  const formattedText = text.replace(/\\n/g, "\n");
+  const html = marked.parse(formattedText || "").replace(/^<p>|<\/p>\n?$/g, "");
   return DOMPurify.sanitize(html, { ADD_TAGS: ["ruby", "rt"] });
 }
 

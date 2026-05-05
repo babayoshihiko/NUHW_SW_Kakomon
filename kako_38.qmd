@@ -2,12 +2,13 @@
 title: "介護福祉士過去問 第38回 (2026年1月実施) "
 ---
 
-各分野から２題ずつランダムに出題しています。
+各分野から出題しています。
 介護過程、総合問題は除いています。
 
 <div id="quiz"></div>
 
 <script>
+window.noShuffleQuestions = false; // true はシャッフル、false はしない
 // window.quizCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXBaNLDdIqGylOxOSpOLa6maaG8vx17hUoxGCOHJfdSMHynIl4ozr7BWK0LoYm2vjgXwT5reWmpp-/pub?gid=1229209791&single=true&output=csv";
 window.quizCSV = "P38.json";
 
@@ -16,15 +17,15 @@ window.quizCSV = "P38.json";
 window.quizConfig = {
   // "カテゴリ名": 出題数
   "人間の尊厳と自立": 2,
-  "介護の基本": 2,
-  "社会の理解": 2,
-  "人間関係とコミュニケーション": 2,
-  "コミュニケーション技術": 2,
-  "生活支援技術": 2,
-  "こころとからだのしくみ": 2,
-  "発達と老化の理解": 2,
-  "認知症の理解": 2,
-  "障害の理解": 2,
-  "医療的ケア": 2
+  "介護の基本": 10,
+  "社会の理解": 12,
+  "人間関係とコミュニケーション": 4,
+  "コミュニケーション技術": 6,
+  "生活支援技術": 26,
+  "こころとからだのしくみ": 12,
+  "発達と老化の理解": 8,
+  "認知症の理解": 10,
+  "障害の理解": 10,
+  "医療的ケア": 5
 };
 </script>

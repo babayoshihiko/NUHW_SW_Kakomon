@@ -43,13 +43,13 @@ format:
     theme: 
       - cosmo
       - custom.scss
-    css: /quiz/quiz.css
+    css: /quiz/quiz_multi.css
     toc: true
     include-in-header:
       - text: |
           <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-          <script src="/quiz/quiz.js"></script>
+          <script src="/quiz/quiz_multi.js"></script>
     include-after-body: header.html
 
