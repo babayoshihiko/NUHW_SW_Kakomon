@@ -9,4 +9,5 @@
 _site
 *.Rproj
 _exams/_*_ruby.Rmd 
+_exams/_*_sec.Rmd 
 _exams/*.json
