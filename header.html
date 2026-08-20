@@ -1,0 +1,62 @@
+<div id="popup-container" class="no-print" style="
+     position:fixed;
+     bottom:20px;
+     right:20px;
+     z-index:9999;
+     width:280px;
+     padding:15px;
+     background-color:#f8dfe7;
+     border-radius:15px;
+     box-shadow:0 4px 15px rgba(0,0,0,0.2);
+     display:flex;
+     flex-direction:column;
+     gap:10px;
+   ">
+
+  <!-- スコア表示 -->
+  <div id="score" style="
+       background:rgba(255,255,255,0.5);
+       border-radius:10px;
+     ">
+  </div>
+
+  <!-- 問題読み込み中 -->
+  <div id="quiz-loading" style="
+       display:none;
+       background:rgba(255,255,255,0.5);
+       border-radius:10px;
+       padding:10px;
+       text-align:center;
+     ">
+
+    <img
+      src="Baba.png"
+      alt="Baba"
+      width="70"
+      height="70"
+      style="
+        border-radius:50%;
+        border:2px solid #007bff;
+        background:white;
+        object-fit:cover;
+      "
+    >
+
+    <div style="
+         font-weight:bold;
+         margin-top:8px;
+       ">
+      過去問を読み込んでいます…
+    </div>
+
+    <div style="
+         font-size:0.9rem;
+         color:#555;
+         margin-top:4px;
+       ">
+      まずは一問！
+    </div>
+
+  </div>
+
+</div>

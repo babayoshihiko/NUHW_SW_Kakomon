@@ -26,8 +26,20 @@ website:
         text: Home
       - text: "過去問"
         menu:
-          - href: test.qmd
-            text: "テスト"
+          - href: kako_38.qmd
+            text: "第38回"
+          - href: kako_37.qmd
+            text: "第37回"
+          - href: kako_36.qmd
+            text: "第36回"
+      - text: "パートごと"
+        menu:
+          - href: Part_A.qmd
+            text: "Part A"
+          - href: Part_B.qmd
+            text: "Part B"
+          - href: Part_C.qmd
+            text: "Part C"
 
 
 format:

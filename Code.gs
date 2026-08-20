@@ -59,7 +59,6 @@ NUM: CATEGORY の抽出する件数
  */
 
 
-
 function doGet(e) {
   try {
     const params = e.parameter || {};
@@ -75,22 +74,21 @@ function doGet(e) {
     }
 
     // ==================================================
-    // 1. 全体マスタ「admin」から fileId を取得
+    // 1. 全体マスタ「admin」から
+    //    schoolNameだけでfileIdを取得
     // ==================================================
     const masterSheet = getMasterSheetData_("admin");
 
     const masterRule = masterSheet.find(row => {
-      return row["schoolName"] === schoolName &&
-             row["kakomonName"] === kakomonName;
+      return row["schoolName"] === schoolName;
     });
 
     if (!masterRule) {
       return responseJson({
         status: "error",
         message:
-          `全体マスタ「admin」に一致するデータがありません。\n` +
-          `schoolName="${schoolName}"\n` +
-          `kakomonName="${kakomonName}"`
+          `全体マスタ「admin」に schoolName="${schoolName}" ` +
+          `に一致するデータがありません。`
       });
     }
 
@@ -101,13 +99,12 @@ function doGet(e) {
         status: "error",
         message:
           `全体マスタ「admin」に fileId が設定されていません。\n` +
-          `schoolName="${schoolName}"\n` +
-          `kakomonName="${kakomonName}"`
+          `schoolName="${schoolName}"`
       });
     }
 
     // ==================================================
-    // 2. fileId の学校ブックを開く
+    // 2. fileIdの学校ブックを開く
     // ==================================================
     let schoolSS;
 
@@ -126,7 +123,8 @@ function doGet(e) {
     // ==================================================
     // 3. 学校ブックの「ADMIN」を取得
     // ==================================================
-    const adminSheet = getSheetDataFromSpreadsheet_(schoolSS, "ADMIN");
+    const adminSheet =
+      getSheetDataFromSpreadsheet_(schoolSS, "ADMIN");
 
     if (adminSheet.length === 0) {
       return responseJson({
@@ -141,11 +139,11 @@ function doGet(e) {
     }
 
     // ==================================================
-    // 4. ADMINシートから対象の過去問を検索
+    // 4. ADMINからKAKOMON_NAMEだけで
+    //    対象の過去問を検索
     // ==================================================
     const adminRule = adminSheet.find(row => {
-      return row["KAKOMON_NAME"] === kakomonName &&
-            row["SCHOOL_NAME"] === schoolName;
+      return row["KAKOMON_NAME"] === kakomonName;
     });
 
     if (!adminRule) {
@@ -162,7 +160,7 @@ function doGet(e) {
       return responseJson({
         status: "error",
         message:
-          `ADMINシート内に KAKOMON_NAME="${kakomonName}" / SCHOOL_NAME="${schoolName}" ` +
+          `ADMINシート内に KAKOMON_NAME="${kakomonName}" ` +
           `に一致する行が見つかりませんでした。\n\n` +
           `【DEBUG】\n` +
           `ADMIN行数: ${adminSheet.length}\n` +
@@ -174,9 +172,11 @@ function doGet(e) {
     // ==================================================
     // 5. パスコード認証
     // ==================================================
-    const requiredPasscode = String(adminRule["PASSCODE"] || "");
+    const requiredPasscode =
+      String(adminRule["PASSCODE"] || "");
 
     if (requiredPasscode !== "") {
+
       if (!inputPasscode) {
         return responseJson({
           status: "auth_required",
@@ -193,7 +193,26 @@ function doGet(e) {
     }
 
     // ==================================================
-    // 6. ADMINで指定されたシート名を取得
+    // 6. キャッシュ確認
+    // ==================================================
+    const cache = CacheService.getScriptCache();
+
+    const cacheKey =
+      "quiz_" +
+      schoolName + "_" +
+      kakomonName + "_" +
+      inputPasscode;
+
+    const cachedResponse = cache.get(cacheKey);
+
+    if (cachedResponse) {
+      return ContentService
+        .createTextOutput(cachedResponse)
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ==================================================
+    // 7. ADMINで指定されたシート名を取得
     // ==================================================
     const targetMondaiSheet =
       adminRule["SHEET_MONDAI"] || "MONDAI";
@@ -202,16 +221,22 @@ function doGet(e) {
       adminRule["SHEET_CATEGORY"] || "SHEET_CATEGORY";
 
     // ==================================================
-    // 7. 学校ブック内の各シートからデータ取得
+    // 8. 学校ブック内の各シートからデータ取得
     // ==================================================
     const rawCategories =
-      getSheetDataFromSpreadsheet_(schoolSS, targetCategorySheet);
+      getSheetDataFromSpreadsheet_(
+        schoolSS,
+        targetCategorySheet
+      );
 
     const allMondai =
-      getSheetDataFromSpreadsheet_(schoolSS, targetMondaiSheet);
+      getSheetDataFromSpreadsheet_(
+        schoolSS,
+        targetMondaiSheet
+      );
 
     // ==================================================
-    // 8. CATEGORY / NUM に基づいて問題を抽出
+    // 9. CATEGORY / NUM に基づいて問題を抽出
     // ==================================================
     let finalQuestions = [];
     const categorySummary = [];
@@ -220,19 +245,25 @@ function doGet(e) {
 
       rawCategories.forEach(catRow => {
 
-        const catName = catRow["CATEGORY"] || "";
-        const reqNum = Number(catRow["NUM"]) || 0;
+        const catName =
+          catRow["CATEGORY"] || "";
+
+        const reqNum =
+          Number(catRow["NUM"]) || 0;
 
         if (!catName) return;
 
-        const catMondai = allMondai.filter(
-          m => m["CATEGORY"] === catName
-        );
+        const catMondai =
+          allMondai.filter(
+            m => m["CATEGORY"] === catName
+          );
 
         const selected =
           catMondai.slice(
             0,
-            reqNum > 0 ? reqNum : catMondai.length
+            reqNum > 0
+              ? reqNum
+              : catMondai.length
           );
 
         finalQuestions =
@@ -252,7 +283,7 @@ function doGet(e) {
     }
 
     // ==================================================
-    // 9. 0件時エラー
+    // 10. 0件時エラー
     // ==================================================
     if (finalQuestions.length === 0) {
 
@@ -263,14 +294,19 @@ function doGet(e) {
       detailMsg += `・学校: ${schoolName}\n`;
       detailMsg += `・過去問: ${kakomonName}\n`;
       detailMsg += `・ブック: ${schoolSS.getName()}\n`;
-      detailMsg += `・問題シート: ${targetMondaiSheet} ` +
-                   `(全 ${allMondai.length} 件)\n`;
-      detailMsg += `・カテゴリシート: ${targetCategorySheet} ` +
-                   `(設定 ${rawCategories.length} 件)\n\n`;
+      detailMsg +=
+        `・問題シート: ${targetMondaiSheet} ` +
+        `(全 ${allMondai.length} 件)\n`;
+      detailMsg +=
+        `・カテゴリシート: ${targetCategorySheet} ` +
+        `(設定 ${rawCategories.length} 件)\n\n`;
 
       detailMsg +=
         `■ カテゴリ別抽出内訳\n` +
-        (categorySummary.join("\n") || "カテゴリ指定なし");
+        (
+          categorySummary.join("\n") ||
+          "カテゴリ指定なし"
+        );
 
       return responseJson({
         status: "error",
@@ -279,7 +315,7 @@ function doGet(e) {
     }
 
     // ==================================================
-    // 10. 正常レスポンス
+    // 11. 正常レスポンス
     // ==================================================
     const resultObj = {
       status: "success",
@@ -288,13 +324,32 @@ function doGet(e) {
       data: finalQuestions
     };
 
-    return responseJson(resultObj);
+    const jsonString =
+      JSON.stringify(resultObj);
+
+    // ==================================================
+    // 12. キャッシュ保存
+    // ==================================================
+    try {
+      cache.put(
+        cacheKey,
+        jsonString,
+        600
+      );
+    } catch (cacheErr) {
+      // キャッシュできなくても通常処理を継続
+    }
+
+    return ContentService
+      .createTextOutput(jsonString)
+      .setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
 
     return responseJson({
       status: "error",
-      message: "GASエラー: " + err.message
+      message:
+        "GASエラー: " + err.message
     });
   }
 }
@@ -307,12 +362,16 @@ function doGet(e) {
 // ==================================================
 function getMasterSheetData_(sheetName) {
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName(sheetName);
+  const ss =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheet =
+    ss.getSheetByName(sheetName);
 
   if (!sheet) return [];
 
-  const values = sheet.getDataRange().getValues();
+  const values =
+    sheet.getDataRange().getValues();
 
   if (values.length < 2) return [];
 
@@ -343,11 +402,13 @@ function getSheetDataFromSpreadsheet_(ss, sheetName) {
 
   if (!sheetName) return [];
 
-  const sheet = ss.getSheetByName(sheetName);
+  const sheet =
+    ss.getSheetByName(sheetName);
 
   if (!sheet) return [];
 
-  const values = sheet.getDataRange().getValues();
+  const values =
+    sheet.getDataRange().getValues();
 
   if (values.length < 2) return [];
 
@@ -376,9 +437,11 @@ function getSheetDataFromSpreadsheet_(ss, sheetName) {
 function responseJson(data) {
 
   return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
+    .createTextOutput(
+      JSON.stringify(data)
+    )
+    .setMimeType(
+      ContentService.MimeType.JSON
+    );
 }
-
-
 
