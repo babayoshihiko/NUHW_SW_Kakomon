@@ -30,8 +30,6 @@ website:
             text: "第38回"
           - href: kako_37.qmd
             text: "第37回"
-          - href: kako_36.qmd
-            text: "第36回"
       - text: "パートごと"
         menu:
           - href: Part_A.qmd

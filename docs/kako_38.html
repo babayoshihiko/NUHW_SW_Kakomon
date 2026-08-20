@@ -113,10 +113,6 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="./kako_37.html">
  <span class="dropdown-text">第37回</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="./kako_36.html">
- <span class="dropdown-text">第36回</span></a>
-  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -174,32 +170,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>各分野から出題しています。 介護過程、総合問題は除いています。</p>
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "新潟医療福祉大学";
+  window.kakomonName = "過去問第38回";
+  window.noShuffleQuestions = true;
+  window.kakomonNChoice = 3;
+</script>
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz">
 
 </div>
-<script>
-window.noShuffleQuestions = false; // true はシャッフル、false はしない
-// window.quizCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXBaNLDdIqGylOxOSpOLa6maaG8vx17hUoxGCOHJfdSMHynIl4ozr7BWK0LoYm2vjgXwT5reWmpp-/pub?gid=1229209791&single=true&output=csv";
-window.quizCSV = "P38.json";
-
-
-// 【追加】出題ルールの設定
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "介護の基本": 10,
-  "社会の理解": 12,
-  "人間関係とコミュニケーション": 4,
-  "コミュニケーション技術": 6,
-  "生活支援技術": 26,
-  "こころとからだのしくみ": 12,
-  "発達と老化の理解": 8,
-  "認知症の理解": 10,
-  "障害の理解": 10,
-  "医療的ケア": 5
-};
-</script>
 
 
 
