@@ -4,32 +4,8 @@ title: "テスト"
 
 このページはテスト用です。
 
-- こころとからだのしくみ: 2
-- 発達と老化の理解: 2
-- 認知症の理解: 2
-- 障害の理解: 2
-- 医療的ケア: 1
 
-それぞれランダムに出題するようになっています。
-
-問題データ
+問題データ（学内）
 
 <a href="https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing</a>
 
-
-<div id="quiz"></div>
-
-<script>
-window.quizCSV = "https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/export?format=csv";
-
-
-// 【追加】出題ルールの設定
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "こころとからだのしくみ": 2,
-  "発達と老化の理解": 2,
-  "認知症の理解": 2,
-  "障害の理解": 2,
-  "医療的ケア": 1
-};
-</script>

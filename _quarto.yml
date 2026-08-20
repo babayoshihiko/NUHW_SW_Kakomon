@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
 
 
 resources:
@@ -24,32 +24,23 @@ website:
     left:
       - href: index.qmd
         text: Home
-# --- ここからドロップダウンの設定 ---
       - text: "過去問"
         menu:
-          - href: kako_38.qmd
-            text: "第38回（2025年度）"
-          - href: kako_37.qmd
-            text: "第37回（2024年度）"
-          - href: kako_36.qmd
-            text: "第36回（2023年度）"
-      - text: "単元ごと"
-        menu:
-          - href: P_Process.qmd
-            text: "介護過程"
+          - href: test.qmd
+            text: "テスト"
+
 
 format:
   html:
     theme: 
       - cosmo
       - custom.scss
-    css: /quiz/quiz_multi.css
+    css: quiz_multi.css  # 先頭の / を外す
     toc: true
     include-in-header:
       - text: |
           <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-          <script src="/quiz/quiz_multi.js"></script>
+          <script src="quiz_multi.js"></script>
     include-after-body: header.html
-

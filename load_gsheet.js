@@ -1,61 +1,201 @@
 
-
 window.addEventListener("DOMContentLoaded", async () => {
-  const gasUrl = "https://script.google.com/macros/s/AKfycbyfb8SbR4xyO9ygmKFrMHiqwexntoxXWf_hUfJwUIq-ywwqjr2dQtL8Qv6vVT8nuNg/exec";
-  const ADMIN_SHEET_ID = "1tm6YBQ52wCqMjM4HSrpo1pp1gwNd9YpF-liLb-Cvqec";
-  const ADMIN_SHEET_NAME = "admnin"; 
+
+  // ==========================================
+  // GASのウェブアプリURL
+  // ==========================================
+  const gasUrl =
+    "https://script.google.com/macros/s/AKfycbzEsnGKR0mNzRc_ECKgN4H0WHQ1x4j-djwKHCNZ9Hx4kgf3YDqrZc9YQ4cJ0y4-ML4DYw/exec";
 
   const schoolName = window.schoolName || "";
-  const kakomonName = window.kakomonName;
+  const kakomonName = window.kakomonName || "";
 
   if (!kakomonName) {
-    console.error("❌ エラー: kakomonName が未設定のため処理を中断します。");
+    console.error(
+      "❌ エラー: kakomonName が未設定のため処理を中断します。"
+    );
     return;
   }
 
+  // ==========================================
+  // クイズ読み込み
+  // ==========================================
   async function loadQuiz(passcode = "") {
+
     try {
-      let fetchUrl = `${gasUrl}?id=${ADMIN_SHEET_ID}&adminSheetName=${encodeURIComponent(ADMIN_SHEET_NAME)}&kakomonName=${encodeURIComponent(kakomonName)}`;
-      if (schoolName) fetchUrl += `&schoolName=${encodeURIComponent(schoolName)}`;
-      if (passcode) fetchUrl += `&passcode=${encodeURIComponent(passcode)}`;
 
-      const res = await fetch(fetchUrl);
-      const data = await res.json();
+      // ------------------------------
+      // 1. パラメータの構築
+      // ------------------------------
+      const params = new URLSearchParams({
+        kakomonName: kakomonName
+      });
 
-      // パスコードチェック
-      if (data.error === "PASSCODE_REQUIRED" || data.error === "PASSCODE_INCORRECT") {
-        const msg = data.error === "PASSCODE_INCORRECT" ? "パスコードが違います。再入力してください:" : "パスコードを入力してください:";
-        const input = prompt(msg);
-        if (input) {
-          loadQuiz(input); // パスコードを付けて再試行
+      if (schoolName) {
+        params.append("schoolName", schoolName);
+      }
+
+      if (passcode) {
+        params.append("passcode", passcode);
+      }
+
+      const url = `${gasUrl}?${params.toString()}`;
+
+      console.log("▶ GASリクエスト:", url);
+
+      // ------------------------------
+      // 2. GASへリクエスト
+      // ------------------------------
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        throw new Error(
+          `GAS通信エラー: HTTP ${res.status}`
+        );
+      }
+
+      const result = await res.json();
+
+      console.log("◀ GASレスポンス:", result);
+      console.log("◀ GAS status:", result.status);
+
+      // ==========================================
+      // 3. パスコード要求
+      // ==========================================
+      if (result.status === "auth_required") {
+
+        const input = prompt(
+          `${result.message}\nパスコードを入力してください:`
+        );
+
+        // キャンセルまたは空欄
+        if (!input) {
+          console.log("パスコード入力がキャンセルされました。");
+          return;
         }
+
+        console.log("▶ パスコードを入力して再リクエスト");
+
+        // 認証後の処理を確実に待つ
+        await loadQuiz(input);
+
         return;
       }
 
-      if (data.error) {
-        console.error("❌ GASエラー:", data.error);
+      // ==========================================
+      // 4. エラー処理
+      // ==========================================
+      if (result.status === "error") {
+
+        console.error(
+          "❌ GASエラー:",
+          result.message
+        );
+
+        // パスコード間違い
+        if (
+          result.message &&
+          result.message.includes("パスコード")
+        ) {
+
+          const input = prompt(
+            `${result.message}\nパスコードを入力してください:`
+          );
+
+          if (!input) {
+            console.log(
+              "パスコード入力がキャンセルされました。"
+            );
+            return;
+          }
+
+          await loadQuiz(input);
+
+          return;
+        }
+
+        alert(result.message);
         return;
       }
 
-      // 出題設定の格納
-      window.quizConfig = data.quizConfig || {};
+      // ==========================================
+      // 5. 正常レスポンス
+      // ==========================================
+      if (result.status !== "success") {
 
-      // データの変換とグローバル格納
-      const rawQuizData = data.quizData || [];
-      window.currentQuizData = typeof convertToQuizData === "function" 
-        ? convertToQuizData(rawQuizData) 
-        : rawQuizData;
+        console.error(
+          "❌ 想定外のGASレスポンス:",
+          result
+        );
 
-      // 描画
+        alert(
+          "GASから想定外のレスポンスが返されました。"
+        );
+
+        return;
+      }
+      // ==========================================
+      // 6. クイズデータ格納
+      // ==========================================
+      
+      // GASの CATEGORY / NUM を
+      // renderQuiz() が期待する {カテゴリ名: 件数} に変換
+      window.quizConfig = {};
+      
+      (result.categories || []).forEach(cat => {
+        const category = cat.CATEGORY || "";
+        const num = Number(cat.NUM) || 0;
+      
+        if (category) {
+          window.quizConfig[category] = num;
+        }
+      });
+      
+      const rawQuizData = result.data || [];
+      
+      console.log("✅ GASから取得した問題数:", rawQuizData.length);
+      console.log("✅ GASカテゴリ設定:", window.quizConfig);
+      
+      // 既存の変換関数を使用
+      window.currentQuizData = convertToQuizData(rawQuizData);
+      
+      console.log(
+        "🔄 convertToQuizData後の問題数:",
+        window.currentQuizData.length
+      );
+      
+      // ==========================================
+      // 7. クイズ描画
+      // ==========================================
+      
       if (typeof renderQuiz === "function") {
         renderQuiz(window.currentQuizData, "quiz");
+      } else {
+        console.error("❌ renderQuiz 関数が見つかりません。");
       }
+
+
+
+
+
     } catch (err) {
-      console.error("通信エラーが発生しました:", err);
+
+      console.error(
+        "❌ 通信エラーが発生しました:",
+        err
+      );
+
+      alert(
+        "問題データの読み込み中にエラーが発生しました。"
+      );
     }
   }
 
-  // 初期読み込み実行
-  loadQuiz();
+  // ==========================================
+  // 初期読み込み
+  // ==========================================
+  await loadQuiz();
+
 });
+
 
