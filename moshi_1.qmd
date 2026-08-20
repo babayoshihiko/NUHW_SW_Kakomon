@@ -1,12 +1,12 @@
 ---
-title: "Part B"
+title: "介護福祉士過去問 第38回 (2026年1月実施) "
 ---
 
 
 <!-- 1. GAS呼び出し用の設定パラメータ -->
 <script>
   window.schoolName  = "新潟医療福祉大学";
-  window.kakomonName = "Part B";
+  window.kakomonName = "模試第1回";
   window.kakomonNChoice = 3;
 </script>
 
@@ -15,4 +15,3 @@ title: "Part B"
 
 <!-- 3. クイズを表示するエリア -->
 <div id="quiz"></div>
-

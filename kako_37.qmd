@@ -1,30 +1,19 @@
 ---
-title: "介護福祉士過去問 第37回 (2025年1月実施) "
+ttitle: "介護福祉士過去問 第37回 (2025年1月実施) "
 ---
 
-各分野から２題ずつランダムに出題しています。
-介護過程、総合問題は除いています。
 
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "新潟医療福祉大学";
+  window.kakomonName = "過去問第37回";
+  window.noShuffleQuestions = true;
+  window.kakomonNChoice = 3;
+</script>
+
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz"></div>
 
-<script>
-window.noShuffleQuestions = false; // true はシャッフル、false はしない
-window.quizCSV = "P37.json";
-
-
-// 【追加】出題ルールの設定
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "人間関係とコミュニケーション": 2,
-  "社会の理解": 2,
-  "こころとからだのしくみ": 2,
-  "発達と老化の理解": 2,
-  "認知症の理解": 2,
-  "障害の理解": 2,
-  "医療的ケア": 2,
-  "介護の基本": 2,
-  "コミュニケーション技術": 2,
-  "生活支援技術": 2
-};
-</script>

@@ -7,7 +7,6 @@ title: "Part C"
 <script>
   window.schoolName  = "新潟医療福祉大学";
   window.kakomonName = "Part C";
-  window.noShuffleQuestions = true;
   window.kakomonNChoice = 3;
 </script>
 

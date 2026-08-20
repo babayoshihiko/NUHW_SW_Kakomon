@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "テスト",
-    "section": "",
-    "text": "このページはテスト用です。\n問題データ（学内）\nhttps://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing"
-  },
-  {
     "objectID": "kako_36.html",
     "href": "kako_36.html",
     "title": "介護福祉士過去問 第36回 (2024年1月実施)",
@@ -14,10 +7,10 @@
     "text": "各分野から２題ずつランダムに出題しています。 介護過程、総合問題は除いています。"
   },
   {
-    "objectID": "kako_37.html",
-    "href": "kako_37.html",
-    "title": "介護福祉士過去問 第37回 (2025年1月実施)",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "テスト",
     "section": "",
-    "text": "各分野から２題ずつランダムに出題しています。 介護過程、総合問題は除いています。"
+    "text": "新潟医療福祉大学の介護福祉士国家試験演習サイトです。\n\n過去問\n\n前年度 全問掲載！\n前々年度 全問掲載！\n\n模擬試験\n\nオリジナル問題（要パスワード）\n\nパートごと\n\nPart A（要パスワード） 問題数減らしてランダム表示\nPart B（要パスワード） 問題数減らしてランダム表示\nPart C（要パスワード） 問題数減らしてランダム表示\n\n\n問題データ（学内のみ）\nhttps://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing"
   }
 ]

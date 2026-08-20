@@ -30,6 +30,10 @@ website:
             text: "第38回"
           - href: kako_37.qmd
             text: "第37回"
+      - text: "模擬試験"
+        menu:
+          - href: moshi_1.qmd
+            text: "第1回"
       - text: "パートごと"
         menu:
           - href: Part_A.qmd

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>介護福祉士過去問 第37回 (2025年1月実施) – 介護福祉士問題演習</title>
+<title>kako_37 – 介護福祉士問題演習</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -117,9 +117,20 @@ ul.task-list li input[type="checkbox"] {
   </li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu--1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">パートごと</span>
+ <span class="menu-text">模擬試験</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu--1">    
+        <li>
+    <a class="dropdown-item" href="./moshi_1.html">
+ <span class="dropdown-text">第1回</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu--2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">パートごと</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu--2">    
         <li>
     <a class="dropdown-item" href="./Part_A.html">
  <span class="dropdown-text">Part A</span></a>
@@ -149,52 +160,24 @@ ul.task-list li input[type="checkbox"] {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">介護福祉士過去問 第37回 (2025年1月実施)</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>各分野から２題ずつランダムに出題しています。 介護過程、総合問題は除いています。</p>
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "新潟医療福祉大学";
+  window.kakomonName = "過去問第37回";
+  window.noShuffleQuestions = true;
+  window.kakomonNChoice = 3;
+</script>
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz">
 
 </div>
-<script>
-window.noShuffleQuestions = false; // true はシャッフル、false はしない
-window.quizCSV = "P37.json";
-
-
-// 【追加】出題ルールの設定
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "人間関係とコミュニケーション": 2,
-  "社会の理解": 2,
-  "こころとからだのしくみ": 2,
-  "発達と老化の理解": 2,
-  "認知症の理解": 2,
-  "障害の理解": 2,
-  "医療的ケア": 2,
-  "介護の基本": 2,
-  "コミュニケーション技術": 2,
-  "生活支援技術": 2
-};
-</script>
 
 
 
