@@ -5,10 +5,6 @@ project:
 
 resources:
   - Baba.png
-  - P38.json
-  - P37.json
-  - P36.json
-  - P_Process.json
 
 
 website:
@@ -42,7 +38,8 @@ website:
             text: "Part B"
           - href: Part_C.qmd
             text: "Part C"
-
+          - href: Part_IRYO.qmd
+            text: "医療的ケア"
 
 format:
   html:
