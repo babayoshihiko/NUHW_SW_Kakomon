@@ -179,14 +179,20 @@ function renderQuiz(quizData, containerId = "quiz") {
       acc[key].push(obj);
       return acc;
     }, {});
+
     displayData = Object.keys(groups).flatMap(catName => {
       const limit = parseInt(window.quizConfig[catName], 10);
-      return (!isNaN(limit) && limit > 0) ? shuffle([...groups[catName]]).slice(0, limit) : []; 
+      return (!isNaN(limit) && limit > 0)
+        ? shuffle([...groups[catName]]).slice(0, limit)
+        : [];
     });
   }
 
-  if (window.noShuffleQuestions === false) displayData = shuffle(displayData);
-  currentQuizData = displayData; 
+  if (window.noShuffleQuestions === false) {
+    displayData = shuffle(displayData);
+  }
+
+  currentQuizData = displayData;
   container.innerHTML = "";
 
   if (displayData.length === 0) {
@@ -194,31 +200,105 @@ function renderQuiz(quizData, containerId = "quiz") {
     return;
   }
 
+  // ==================================================
+  // カテゴリ一覧を作成
+  // ==================================================
+  const categories = [];
+
+  displayData.forEach(q => {
+    const category = q.category || "未分類";
+    if (!categories.includes(category)) {
+      categories.push(category);
+    }
+  });
+
+  if (categories.length > 0) {
+    const categoryNav = document.createElement("div");
+    categoryNav.className = "category-nav";
+
+    const navTitle = document.createElement("div");
+    navTitle.className = "category-nav-title";
+    navTitle.textContent = "カテゴリ";
+    categoryNav.appendChild(navTitle);
+
+    categories.forEach((category, index) => {
+      const link = document.createElement("a");
+
+      // 安全なIDを生成
+      const categoryId = `quiz-category-${index}`;
+
+      link.href = `#${categoryId}`;
+      link.textContent = category;
+      link.className = "category-link";
+
+      categoryNav.appendChild(link);
+    });
+
+    container.appendChild(categoryNav);
+  }
+
+  // ==================================================
+  // 問題を表示
+  // ==================================================
   let currentCategory = "";
+  let categoryIndex = 0;
+
   displayData.forEach((q, index) => {
+
     if (q.category && q.category !== currentCategory) {
       currentCategory = q.category;
+
       const categoryTitle = document.createElement("h3");
       categoryTitle.className = "category-title";
+
+      // カテゴリ一覧からジャンプできるID
+      categoryTitle.id = `quiz-category-${categoryIndex}`;
+      categoryIndex++;
+
       categoryTitle.innerHTML = renderTextWithRuby(currentCategory);
       container.appendChild(categoryTitle);
     }
+
     const div = document.createElement("div");
     div.classList.add("quiz-item");
+
     console.log("quiz_multi.js kakomonNChoice:", window.kakomonNChoice);
-    
+
     const nChoice = window.kakomonNChoice || 5;
-    
+
     console.log("nChoice:", nChoice);
+
     const choices = prepareChoices(q, nChoice);
     const qText = renderTextWithRuby(q.question);
+
     let html = `<p><strong>Q${index + 1}. ${qText}</strong></p><div class="choices-container">`;
+
     choices.forEach(choice => {
       const cText = renderTextWithRuby(choice.text);
-      html += `<button type="button" class="choice-btn" data-correct="${choice.isCorrect}" onclick="toggleSelection(this)">${cText}</button>`;
+
+      html += `
+        <button
+          type="button"
+          class="choice-btn"
+          data-correct="${choice.isCorrect}"
+          onclick="toggleSelection(this)"
+        >${cText}</button>`;
     });
-    const safeExp = q.explanation ? q.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "";
-    html += `</div><button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">ANSWER</button><p class="result"></p><div class="explanation" style="display:none;"></div>`;
+
+    const safeExp = q.explanation
+      ? q.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;')
+      : "";
+
+    html += `
+      </div>
+      <button
+        class="submit-btn"
+        onclick="checkAnswerMulti(${index}, '${safeExp}')"
+      >ANSWER</button>
+      <p class="result"></p>
+      <div class="explanation" style="display:none;"></div>
+    `;
+
     div.innerHTML = html;
     container.appendChild(div);
   });

@@ -120,7 +120,37 @@ rt { font-size: 0.6em; color: #555; }
 }
 
 
+/* トップにあるカテゴリ */
+.category-nav {
+  margin-bottom: 30px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
 
+.category-nav-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.category-link {
+  display: inline-block;
+  margin: 4px 8px 4px 0;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #333;
+}
+
+.category-link:hover {
+  background: #eee;
+}
+
+.category-title {
+  scroll-margin-top: 20px;
+}
 
 
 

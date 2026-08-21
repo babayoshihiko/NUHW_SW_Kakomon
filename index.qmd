@@ -19,5 +19,5 @@ title: "テスト"
 
 問題データ（学内のみ）
 
-<a href="https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing</a>
+<a href="https://docs.google.com/spreadsheets/d/1tm6YBQ52wCqMjM4HSrpo1pp1gwNd9YpF-liLb-Cvqec/edit?usp=sharing">Google Spreadsheet</a>
 
