@@ -66,6 +66,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       console.log("◀ GAS status:", result.status);
 
       // ==========================================
+      // ADMIN設定 from Google Spreadsheet/GAS
+      // ==========================================
+      if (result.config) {
+
+        console.log("NCHOICE:", result.config.NCHOICE);
+        console.log("NCHOICE Number:", Number(result.config.NCHOICE));
+        
+        window.kakomonNChoice = Number(result.config.NCHOICE);
+        
+        console.log("window.kakomonNChoice:", window.kakomonNChoice);
+
+      }
+
+      // ==========================================
       // 3. パスコード要求
       // ==========================================
       if (result.status === "auth_required") {

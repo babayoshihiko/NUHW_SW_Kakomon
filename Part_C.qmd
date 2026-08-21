@@ -1,13 +1,12 @@
 ---
 title: "Part C"
 ---
-
+<button onclick="preparePrint()" style="cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;">🖨️ 印刷用レイアウト</button>
 
 <!-- 1. GAS呼び出し用の設定パラメータ -->
 <script>
   window.schoolName  = "新潟医療福祉大学";
   window.kakomonName = "Part C";
-  window.kakomonNChoice = 3;
 </script>
 
 <!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->

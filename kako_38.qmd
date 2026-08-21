@@ -1,14 +1,13 @@
 ---
 title: "介護福祉士過去問 第38回 (2026年1月実施) "
 ---
-
+<button onclick="preparePrint()" style="cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;">🖨️ 印刷用レイアウト</button>
 
 <!-- 1. GAS呼び出し用の設定パラメータ -->
 <script>
   window.schoolName  = "新潟医療福祉大学";
   window.kakomonName = "過去問第38回";
   window.noShuffleQuestions = true;
-  window.kakomonNChoice = 3;
 </script>
 
 <!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->

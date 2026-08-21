@@ -319,6 +319,7 @@ function doGet(e) {
     // ==================================================
     const resultObj = {
       status: "success",
+      config: adminRule,
       categories: rawCategories,
       num: finalQuestions.length,
       data: finalQuestions

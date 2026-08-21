@@ -205,7 +205,11 @@ function renderQuiz(quizData, containerId = "quiz") {
     }
     const div = document.createElement("div");
     div.classList.add("quiz-item");
+    console.log("quiz_multi.js kakomonNChoice:", window.kakomonNChoice);
+    
     const nChoice = window.kakomonNChoice || 5;
+    
+    console.log("nChoice:", nChoice);
     const choices = prepareChoices(q, nChoice);
     const qText = renderTextWithRuby(q.question);
     let html = `<p><strong>Q${index + 1}. ${qText}</strong></p><div class="choices-container">`;
