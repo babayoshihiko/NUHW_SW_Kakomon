@@ -218,7 +218,7 @@ function renderQuiz(quizData, containerId = "quiz") {
 
     const navTitle = document.createElement("div");
     navTitle.className = "category-nav-title";
-    navTitle.textContent = "カテゴリ";
+    navTitle.textContent = "試験科目";
     categoryNav.appendChild(navTitle);
 
     categories.forEach((category, index) => {
